@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+
+    <title>Git - Cơ Bản Về Phân Nhánh và Tích Hợp</title>
+
+    <link href='/favicon.ico' rel='shortcut icon' type='image/x-icon'>
+
+    <link rel="stylesheet" media="screen" href="/assets/git-scm-c0a300c8711cc437e57352985c4670ef.css" />
+    <script src="/assets/modernizr-73487a82ac9441eca1dffe781de7b411.js"></script>
+    <script src="/assets/modernizr-tests-8c741d16cb1132d4d6ce71230eb164d2.js"></script>
+    <!--[if (gte IE 6)&(lte IE 8)]>
+    <script src="/javascripts/selectivizr-min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="documentation">
+
+<div class="inner">
+    <header>
+
+        <a href="/"><img src="/images/logo@2x.png" width="110" height="46" alt="Git" /></a>
+        <span id="tagline"></span>
+        <script type="text/javascript">
+    var taglines = ["fast-version-control","everything-is-local","distributed-even-if-your-workflow-isnt","local-branching-on-the-cheap","distributed-is-the-new-centralized"];
+    var tagline = taglines[Math.floor(Math.random() * taglines.length)];
+    document.getElementById('tagline').innerHTML = '--' + tagline;
+  </script>
+        <form id="search" action="/search/results">
+            <input id="search-text" name="search" placeholder="Search entire site..." autocomplete="off" type="text" />
+        </form>
+        <div id="search-results"></div>
+
+    </header>
+
+</div> <!-- .inner -->
+
+<div class="inner">
+    <div id="content-wrapper">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="/about">About</a>
+                        <ul class="">
+                            <li>
+                                <a href="/about">Branching and Merging</a>
+                            </li>
+                            <li>
+                                <a href="/about/small-and-fast">Small and Fast</a>
+                            </li>
+                            <li>
+                                <a href="/about/distributed">Distributed</a>
+                            </li>
+                            <li>
+                                <a href="/about/info-assurance">Data Assurance</a>
+                            </li>
+                            <li>
+                                <a href="/about/staging-area">Staging Area</a>
+                            </li>
+                            <li>
+                                <a href="/about/free-and-open-source">Free and Open Source</a>
+                            </li>
+                            <li>
+                                <a href="/about/trademark">Trademark</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="active" href="/doc">Documentation</a>
+                        <ul class="expanded">
+                            <li>
+                                <a href="/docs">Reference</a>
+                            </li>
+                            <li>
+                                <a href="/book">Book</a>
+                            </li>
+                            <li>
+                                <a href="/videos">Videos</a>
+                            </li>
+                            <li>
+                                <a href="/doc/ext">External Links</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/blog">Blog</a>
+                    </li>
+                    <li>
+                        <a href="/downloads">Downloads</a>
+                        <ul class="">
+                            <li>
+                                <a href="/downloads/guis">GUI Clients</a>
+                            </li>
+                            <li>
+                                <a href="/downloads/logos">Logos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/community">Community</a>
+                    </li>
+                </ul>
+                <hr class="sidebar">
+                <p>
+                    This book is available in
+                    <a href="/book/en">English</a>.
+                </p>
+                <p>
+                    Full translation available in
+                    <a href="/book/de">Deutsch</a>,
+                    <a href="/book/zh">简体中文</a>,
+                    <a href="/book/zh-tw">正體中文</a>,
+                    <a href="/book/fr/v2">Français</a>,
+                    <a href="/book/ja">日本語</a>,
+                    <a href="/book/nl">Nederlands</a>,
+                    <a href="/book/ru">Русский</a>,
+                    <a href="/book/ko">한국어</a>,
+                    <a href="/book/pt-br">Português (Brasil)</a> and
+                    <a href="/book/cs">Čeština</a>.
+                </p>
+                <p>
+                    Partial translations available in
+                    <a href="/book/ar">Arabic</a>,
+                    <a href="/book/es">Español</a>,
+                    <a href="/book/id">Indonesian</a>,
+                    <a href="/book/it">Italiano</a>,
+                    <a href="/book/fi">Suomi</a>,
+                    <a href="/book/mk">Македонски</a>,
+                    <a href="/book/gr">Ελληνικά</a>,
+                    <a href="/book/pl">Polski</a> and
+                    <a href="/book/tr">Türkçe</a>.
+                </p>
+                <p>
+                    Translations started for
+                    <a href="/book/az">Azərbaycan dili</a>,
+                    <a href="/book/be">Беларуская</a>,
+                    <a href="/book/ca">Català</a>,
+                    <a href="/book/eo">Esperanto</a>,
+                    <a href="/book/es-ni">Español (Nicaragua)</a>,
+                    <a href="/book/fa" dir="rtl">فارسی</a>,
+                    <a href="/book/hi">हिन्दी</a>,
+                    <a href="/book/hu">Magyar</a>,
+                    <a href="/book/no-nb">Norwegian Bokmål</a>,
+                    <a href="/book/ro">Română</a>,
+                    <a href="/book/sr">Српски</a>,
+                    <a href="/book/th">ภาษาไทย</a>,
+                    <a href="/book/vi">Tiếng Việt</a>,
+                    <a href="/book/uk">Українська</a> and
+                    <a href="/book/uz/v2">Ўзбекча</a>.
+                </p>
+                <hr class="sidebar"/>
+                <p>
+                    The source of this book is <a href="https://github.com/progit/progit2">hosted on GitHub.</a></br>
+                    Patches, suggestions and comments are welcome.
+                </p>
+
+
+
+            </nav>
+        </aside>
+
+        <div id="content">
+
+
+            <div id='book-chapters'>
+                <a class="dropdown-trigger" id="book-chapters-trigger" data-panel-id="chapters-dropdown" href="#">Chapters ▾</a>
+                <div class='dropdown-panel' id='chapters-dropdown'>
+                    <div class="three-column">
+                        <div class='column-left'>
+                            <ol class='book-toc'>
+                                <li class='chapter'>
+                                    <h2>. <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u">Bắt Đầu</a></h2>
+                                    <ol>
+                                        <li>
+                                            .1
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-V%E1%BB%81-Qu%E1%BA%A3n-L%C3%BD-Phi%C3%AAn-B%E1%BA%A3n">Về Quản Lý Phiên Bản</a>
+                                        </li>
+                                        <li>
+                                            .2
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-S%C6%A1-L%C6%B0%E1%BB%A3c-L%E1%BB%8Bch-S%E1%BB%AD-c%E1%BB%A7a-Git">Sơ Lược Lịch Sử của Git</a>
+                                        </li>
+                                        <li>
+                                            .3
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-C%C6%A1-B%E1%BA%A3n-v%E1%BB%81-Git">Cơ Bản về Git</a>
+                                        </li>
+                                        <li>
+                                            .4
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-C%C3%A0i-%C4%90%E1%BA%B7t-Git">Cài Đặt Git</a>
+                                        </li>
+                                        <li>
+                                            .5
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-C%E1%BA%A5u-H%C3%ACnh-Git-L%E1%BA%A7n-%C4%90%E1%BA%A7u">Cấu Hình Git Lần Đầu</a>
+                                        </li>
+                                        <li>
+                                            .6
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-Tr%E1%BB%A3-Gi%C3%BAp">Trợ Giúp</a>
+                                        </li>
+                                        <li>
+                                            .7
+                                            <a href="/book/vi/v1/B%E1%BA%AFt-%C4%90%E1%BA%A7u-T%C3%B3m-T%E1%BA%AFt">Tóm Tắt</a>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+
+                        </div>
+                        <div class='column-middle'>
+                            <ol class='book-toc'>
+                                <li class='chapter'>
+                                    <h2>. <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git">Cơ Bản Về Git</a></h2>
+                                    <ol>
+                                        <li>
+                                            .1
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-T%E1%BA%A1o-M%E1%BB%99t-Kho-Ch%E1%BB%A9a-Git">Tạo Một Kho Chứa Git</a>
+                                        </li>
+                                        <li>
+                                            .2
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-Ghi-L%E1%BA%A1i-Thay-%C4%90%E1%BB%95i-v%C3%A0o-Kho-Ch%E1%BB%A9a">Ghi Lại Thay Đổi vào Kho Chứa</a>
+                                        </li>
+                                        <li>
+                                            .3
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-Xem-L%E1%BB%8Bch-S%E1%BB%AD-Commit">Xem Lịch Sử Commit</a>
+                                        </li>
+                                        <li>
+                                            .4
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-Ph%E1%BB%A5c-H%E1%BB%93i">Phục Hồi</a>
+                                        </li>
+                                        <li>
+                                            .5
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-L%C3%A0m-Vi%E1%BB%87c-T%E1%BB%AB-Xa">Làm Việc Từ Xa</a>
+                                        </li>
+                                        <li>
+                                            .6
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-%C4%90%C3%A1nh-D%E1%BA%A5u">Đánh Dấu</a>
+                                        </li>
+                                        <li>
+                                            .7
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-M%E1%BA%B9o-Nh%E1%BB%8F">Mẹo Nhỏ</a>
+                                        </li>
+                                        <li>
+                                            .8
+                                            <a href="/book/vi/v1/C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Git-T%E1%BB%95ng-K%E1%BA%BFt">Tổng Kết</a>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+
+                        </div>
+                        <div class='column-right'>
+                            <ol class='book-toc'>
+                                <li class='chapter'>
+                                    <h2>. <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git">Phân Nhánh Trong Git</a></h2>
+                                    <ol>
+                                        <li>
+                                            .1
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Nh%C3%A1nh-L%C3%A0-G%C3%AC%3F">Nhánh Là Gì?</a>
+                                        </li>
+                                        <li>
+                                            .2
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-C%C6%A1-B%E1%BA%A3n-V%E1%BB%81-Ph%C3%A2n-Nh%C3%A1nh-v%C3%A0-T%C3%ADch-H%E1%BB%A3p">Cơ Bản Về Phân Nhánh và Tích Hợp</a>
+                                        </li>
+                                        <li>
+                                            .3
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Qu%E1%BA%A3n-L%C3%BD-C%C3%A1c-Nh%C3%A1nh">Quản Lý Các Nhánh</a>
+                                        </li>
+                                        <li>
+                                            .4
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Quy-Tr%C3%ACnh-L%C3%A0m-Vi%E1%BB%87c-Ph%C3%A2n-Nh%C3%A1nh">Quy Trình Làm Việc Phân Nhánh</a>
+                                        </li>
+                                        <li>
+                                            .5
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Nh%C3%A1nh-Remote">Nhánh Remote</a>
+                                        </li>
+                                        <li>
+                                            .6
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Rebasing">Rebasing</a>
+                                        </li>
+                                        <li>
+                                            .7
+                                            <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-T%E1%BB%95ng-K%E1%BA%BFt">Tổng Kết</a>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+
+                        </div>
+                    </div>
+                </div>
+
+                <span class="light" id="edition">
+      1st Edition
+    </span>
+            </div>
+
+            <div id='main' class="book edition1">
+                <h1>.2 Phân Nhánh Trong Git - Cơ Bản Về Phân Nhánh và Tích Hợp</h1>
+                <div><h2>Cơ Bản Về Phân Nhánh và Tích Hợp</h2>
+
+                    <p>Hãy cùng xem qua một ví dụ đơn giản về phân nhánh và tích hợp với một quy trình làm việc mà có thể bạn sẽ sử dụng nó vào thực tế. Bạn sẽ thực hiện theo các bước sau: </p>
+
+                    <ol>
+                        <li>Làm việc trên một web site</li>
+                        <li>Tạo nhánh cho một câu chuyện mới mà bạn đang làm.</li>
+                        <li>Làm việc trên nhánh đó.</li>
+                    </ol>
+
+                    <p>Đến lúc này, bạn nhận được thông báo rằng có một vấn đề nghiêm trọng cần được khắc phục ngay. Bạn sẽ làm theo các bước sau:</p>
+
+                    <ol>
+                        <li>Chuyển lại về nhánh sản xuất (production)</li>
+                        <li>Tạo mới một nhánh khác để khắc phục lỗi</li>
+                        <li>Sau khi đã kiểm tra ổn định, tích hợp nhánh đó lại và đưa vào hoạt động.</li>
+                        <li>Chuyển ngược lại với câu chuyện của bạn và tiếp tục làm việc.</li>
+                    </ol>
+
+                    <h3 id="Cơ-Bản-về-Phân-Nhánh"><a href="#Cơ-Bản-về-Phân-Nhánh">Cơ Bản về Phân Nhánh</a></h3>
+
+                    <p>Đầu tiên, giả sử bạn đang làm việc trên một dự án đã có một số commit từ trước (xem Hình 3-10).</p>
+
+                    <p><center><img src="/figures/18333fig0310-tn.png"></center><br/>
+                    Hình 3-10. Một lịch sử commit ngắn và đơn giản.</p>
+
+                    <p>Bạn quyết định sẽ giải quyết vấn đề số #53 sử dụng bất kỳ hệ thống giám sát vấn đề (issue-tracking) nào mà công ty bạn đang dùng. Để cho rõ ràng, Git không cung cấp kèm bất kỳ hệ thống giám sát vấn đề nào; nhưng bởi vì vấn đề số #53 là cái mà bạn sẽ tập trung vào nên bạn sẽ tạo một nhánh mới để làm việc trên đó. Để tạo một nhánh và chuyển sang nhánh đó đồng thời, bạn có thể chạy lệnh <code>git checkout</code> với tham số <code>-b</code>:</p>
+
+                    <pre><code>$ git checkout -b iss53
+Switched to a new branch &quot;iss53&quot;
+</code></pre>
+
+                    <p>Đây là cách sử dụng vắn tắt của:</p>
+
+                    <pre><code>$ git branch iss53
+$ git checkout iss53
+</code></pre>
+
+                    <p>Hình 3-11 minh họa kết quả.</p>
+
+                    <p><center><img src="/figures/18333fig0311-tn.png"></center><br/>
+                    Hình 3-11. Tạo con trỏ nhánh mới.</p>
+
+                    <p>Bạn làm việc trên đó và sau đó thực hiện một số commit. Làm như vậy sẽ khiến nhánh <code>iss53</code> di chuyển tiến lên, vì bạn đã checkout nó (hay, HEAD đang trỏ đến nó; xem Hình 3-12):</p>
+
+                    <pre><code>$ vim index.html
+$ git commit -a -m &#39;added a new footer [issue 53]&#39;
+</code></pre>
+
+                    <p><center><img src="/figures/18333fig0312-tn.png"></center><br/>
+                    Hình 3-12. Nhánh iss53 đã di chuyển tiến lên cùng với thay đổi của bạn.</p>
+
+                    <p>Bây giờ bạn nhận được thông báo rằng có một vấn đề với trang web, và bạn cần khắc phục nó ngay lập tức. Với Git, bạn không phải triển khai bản vá lỗi cùng với các thay đổi bạn đã thực hiện trên nhánh <code>iss53</code>, và bạn không phải tốn quá nhiều công sức để khôi phục lại các thay đổi đó trước khi áp dụng bản vá vào sản xuất. Tất cả những gì bạn cần phải làm là chuyển lại nhánh master.</p>
+
+                    <p>Tuy nhiên, trước khi làm điều này, bạn nên lưu ý rằng nếu thư mục làm việc hoặc khu vực tổ chức có chứa các thay đổi chưa được commit mà xung đột với nhánh bạn đang làm việc, Git sẽ không cho phép bạn chuyển nhánh. Tốt nhất là bạn nên ở trạng thái làm việc &quot;sạch&quot; (đã commit hết) trước khi chuyển nhánh. Có các cách khác để khắc phục vấn đề này (đó là stashing và sửa commit) mà chúng ta sẽ bàn tới sau. Hiện tại, bạn đã commit hết các thay đổi, vì vậy bạn có thể chuyển lại nhánh master:</p>
+
+                    <pre><code>$ git checkout master
+Switched to branch &quot;master&quot;
+</code></pre>
+
+                    <p>Tại thời điểm này, thư mục làm việc của dự án giống hệt như trước khi bạn bắt đầu giải quyết vấn đề #53, và bạn có thể tập trung vào việc sửa lỗi. Điểm quan trọng cần ghi nhớ: Git khôi phục lại thư mục làm việc của bạn để nó giống như snapshot của commit mà nhánh bạn đang làm việc trỏ tới. Nó thêm, xóa, và sửa các tập tin một cách tự động để đảm bảo rằng thư mục làm việc của bạn giống như lần commit cuối cùng.</p>
+
+                    <p>Tiếp theo, bạn có mỗi lỗi cần phải sửa. Hãy tạo mỗi nhánh để làm việc này cho tới khi nó được hoàn thành (xem Hình 3-13):</p>
+
+                    <pre><code>$ git checkout -b hotfix
+Switched to a new branch &quot;hotfix&quot;
+$ vim index.html
+$ git commit -a -m &#39;fixed the broken email address&#39;
+[hotfix]: created 3a0874c: &quot;fixed the broken email address&quot;
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+</code></pre>
+
+                    <p><center><img src="/figures/18333fig0313-tn.png"></center><br/>
+                    Hình 3-13. Nhánh hotfix dựa trên nhánh master.</p>
+
+                    <p>Bạn có thể chạy để kiểm tra, để chắc chắn rằng bản vá lỗi hoạt động đúng theo ý bạn muốn, và sau đó tích hợp nó lại nhánh chính để triển khai. Bạn có thể làm sử dụng lệnh <code>git merge</code> để làm việc này:</p>
+
+                    <pre><code>$ git checkout master
+$ git merge hotfix
+Updating f42c576..3a0874c
+Fast forward
+ README |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+</code></pre>
+
+                    <p>Bạn sẽ nhận thấy rằng cụm từ &quot;Fast forward&quot; trong lần tích hợp đó. Bởi vì commit được trở tới bởi nhánh mà bạn tích hợp vào lại trực tiếp là upstream của commit hiện tại, vì vậy Git di chuyển con trỏ về phía trước. Nói cách khác, khi bạn cố gắng tích hợp một commit với một commit khác mà có thể truy cập được từ lịch sử của commit trước thì Git sẽ đơn giản hóa bằng cách di chuyển con trỏ về phía trước vì không có sự rẽ nhánh nào để tích hợp - đây được gọi là &quot;fast forward&quot;.</p>
+
+                    <p>Thay đổi của bạn bây giờ ở trong snapshot của commit được trỏ tới bởi nhánh <code>master</code>, và bạn có thể triển khai thay đổi này (xem Hình 3-14).</p>
+
+                    <p><center><img src="/figures/18333fig0314-tn.png"></center><br/>
+                    Hình 3-14. Nhánh master và nhánh hotfix cùng trỏ tới một điểm sau khi tích hợp.</p>
+
+                    <p>Sau khi triển khai xong bản vá lỗi quan trọng đó, bạn đã sẵn sàng để quay lại với công việc bị gián đoạn trước đó. Tuy nhiên, việc đầu tiên cần làm là xóa nhánh <code>hotfix</code> đi, vì bạn không còn cần tới nó nữa - nhánh <code>master</code> trỏ tới cùng một điểm. Bạn có thể xóa nó đi bằng cách sử dụng tham số <code>-d</code> cho lệnh <code>git branch</code>:</p>
+
+                    <pre><code>$ git branch -d hotfix
+Deleted branch hotfix (3a0874c).
+</code></pre>
+
+                    <p>Bây giờ bạn đã có thể chuyển lại nhánh mà bạn đang làm việc trước đó về vấn đề #53 và tiếp tục làm việc (xem Hình 3-15):</p>
+
+                    <pre><code>$ git checkout iss53
+Switched to branch &quot;iss53&quot;
+$ vim index.html
+$ git commit -a -m &#39;finished the new footer [issue 53]&#39;
+[iss53]: created ad82d7a: &quot;finished the new footer [issue 53]&quot;
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+</code></pre>
+
+                    <p><center><img src="/figures/18333fig0315-tn.png"></center><br/>
+                    Hình 3-15. Nhánh iss53 có thể di chuyển về phía trước một cách độc lập.</p>
+
+                    <p>Điều đáng chú ý ở đây là những công việc bạn đã thực hiện ở nhánh <code>hotfix</code> không bao gồm trong nhánh <code>iss53</code>. Nếu bạn muốn đưa chúng vào, bạn có thể tích hợp nhánh <code>master</code> vào nhánh <code>iss53</code> bằng cách chạy lệnh <code>git merge master</code>, hoặc bạn có thể chờ đợi đến khi bạn quyết định tích hợp nhánh <code>iss53</code> ngược trở lại nhánh <code>master</code> về sau.</p>
+
+                    <h3 id="Cơ-Bản-Về-Tích-Hợp"><a href="#Cơ-Bản-Về-Tích-Hợp">Cơ Bản Về Tích Hợp</a></h3>
+
+                    <p>Giả sử bạn đã quyết định việc giải quyết vấn đề #53 đã hoàn thành và sẵn sàng để tích hợp vào nhánh <code>master</code>. Để làm được điều này, bạn sẽ tích hợp nhánh <code>iss53</code> lại, giống như bạn đã làm với nhánh <code>hotfix</code> trước đó. Tất cả những gì cần phải làm là chuyển sang (check out) nhánh mà bạn muốn được tích hợp vào và chạy lệnh <code>git merge</code>:</p>
+
+                    <pre><code>$ git checkout master
+$ git merge iss53
+Merge made by recursive.
+ README |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+</code></pre>
+
+                    <p>Lần này có hơi khác so với lần tích hợp <code>hotfix</code> trước đó. Trong trường hợp này, lịch sử phát triển của bạn đã bị phân nhánh tại một thời điểm nào đó trước kia. Bởi vì commit trên nhánh mà bạn đang làm việc (master) không phải là &quot;cha&quot; trực tiếp của nhánh mà bạn đang tích hợp vào, Git phải làm một số việc. Trường hợp này, Git thực hiện một tích hợp 3-chiều, sử dụng hai snapshot được trỏ tới bởi các đầu mút của nhánh và &quot;cha chung&quot; của cả hai. Hình 3-16 minh họa ba snapshot mà Git sử dụng để thực hiện phép tích hợp trong trường hợp này.</p>
+
+                    <p><center><img src="/figures/18333fig0316-tn.png"></center><br/>
+                    Hình 3-16. Git tự động nhận dạng &quot;cha chung&quot; phù hợp nhất để tích hợp các nhánh lại với nhau.</p>
+
+                    <p>Thay vì việc chỉ di chuyển con trỏ về phía trước, Git tạo một snapshot mới - được hợp thành từ lần tích hợp 3-chiều này và cũng tự tạo một commit mới trỏ tới nó (xem Hình 3-17). Nó được biết tới như là &quot;commit tích hợp&quot; (merge commit) và nó đặc biệt vì có nhiều hơn một cha.</p>
+
+                    <p>Đáng để chỉ ra rằng Git tự quyết định cha chung phù hợp nhất để sử dụng làm cơ sở cho việc tích hợp; điểm này khác với CVS hay Subversion (các phiên bản trước 1.5), khi mà các lập trình viên phải tự xác định cơ sở phù hợp nhất để tích hợp. Điều này khiến cho việc tích hợp trong Git trở nên dễ dàng hơn rất nhiều so với các hệ quản trị phiên bản khác.</p>
+
+                    <p><center><img src="/figures/18333fig0317-tn.png"></center><br/>
+                    Hình 3-17. Git tự động tạo đối tượng commit mới chứa đựng các thay đổi đã tích hợp.</p>
+
+                    <p>Bây giờ công việc của bạn đã được tích hợp lại với nhau, bạn không cần thiết phải giữ lại nhánh <code>iss53</code> nữa. Bạn có thể xóa nó đi và sau đó tự xóa vấn đề này trong hệ thống quản lý vấn đề của bạn:</p>
+
+                    <pre><code>$ git branch -d iss53
+</code></pre>
+
+                    <h3 id="Mâu-Thuẫn-Khi-Tích-Hợp"><a href="#Mâu-Thuẫn-Khi-Tích-Hợp">Mâu Thuẫn Khi Tích Hợp</a></h3>
+
+                    <p>Đôi khi, quá trình này không diễn ra một cách suôn sẻ. Nếu bạn thay đổi cùng một nội dung của cùng một tập tin ở hai nhánh khác nhau mà bạn đang muốn tích hợp vào, Git không thể tích hợp chúng một cách gọn gàng. Nếu bản vá lỗi cho vấn đề #53 cùng thay đổi một phần của một tập tin giống như nhánh <code>hotfix</code>, bạn sẽ nhận được một sự xung đột khi tiến hành tích hợp như sau:</p>
+
+                    <pre><code>$ git merge iss53
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.
+</code></pre>
+
+                    <p>Git chưa tự tạo commit tích hợp mới. Nó tạm dừng quá trình này lại cho đến khi bạn giải quyết xong xung đột. Nếu bạn muốn xem tập tin nào chưa được tích hợp tại bất kỳ thời điểm nào sau khi xung đột xảy ra, bạn có thể sử dụng lệnh <code>git status</code>:</p>
+
+                    <pre><code>[master*]$ git status
+index.html: needs merge
+# On branch master
+# Changes not staged for commit:
+#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+#
+#   unmerged:   index.html
+#
+</code></pre>
+
+                    <p>Với bất kỳ xung đột nào xảy ra mà chưa được giải quyết, chúng sẽ được liệt kê là unmerged (chưa được tích hợp). Git thêm các dấu hiệu chuẩn riêng để giải quyết xung đột vào các tập tin có xảy ra xung đột, vì thế bạn có thể mở và giải quyết các xung đột đó một cách thủ công. Tập tin của bạn sẽ chứa một phần tương tự như sau:</p>
+
+                    <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:index.html
+&lt;div id=&quot;footer&quot;&gt;contact : email.support@github.com&lt;/div&gt;
+=======
+&lt;div id=&quot;footer&quot;&gt;
+  please contact us at support@github.com
+&lt;/div&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; iss53:index.html
+</code></pre>
+
+                    <p>Điều này có nghĩa là phiên bản trong HEAD (nhánh master, vì nó là nhánh bạn đã check out khi chạy lệnh merge) là phần mới nhất của đoạn đó (mọi thứ phía trên <code>=======</code>), trong khi phiên bản ở nhánh <code>iss53</code> chính là phần phía dưới. Để giải quyết vấn đề này, bạn phải chọn một trong hai phần hoặc tự gộp nội dung của chúng lại. Ví dụ, có thể bạn giải quyết xung đột này bằng cách thay thế toàn bộ đoạn code đó bằng:</p>
+
+                    <pre><code>&lt;div id=&quot;footer&quot;&gt;
+please contact us at email.support@github.com
+&lt;/div&gt;
+</code></pre>
+
+                    <p>Cách giải quyết này có chứa nội dung của cả hai phần, và tôi đã xóa bỏ hoàn toàn các dòng <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, và <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. Sau khi giải quyết xong tất cả các phần này trong các tập tin bị xung đột, chạy lệnh <code>git add</code> cho từng tập tin để đánh dấu là chúng đã được giải quyết. Tổ chức chúng cùng đồng nghĩa với việc đánh dấu là đã được giải quyết trong Git. Nếu bạn muốn sử dụng một công cụ có giao diện đồ họa để giải quyết những vấn đề này, bạn có thể sử dụng <code>git mergetool</code>, Git sẽ tự động mở chương trình tương ứng và trợ giúp bạn giải quyết các xung đột: </p>
+
+                    <pre><code>$ git mergetool
+merge tool candidates: kdiff3 tkdiff xxdiff meld gvimdiff opendiff emerge vimdiff
+Merging the files: index.html
+
+Normal merge conflict for &#39;index.html&#39;:
+  {local}: modified
+  {remote}: modified
+Hit return to start merge resolution tool (opendiff):
+</code></pre>
+
+                    <p>Nếu bạn muốn sử dụng một công cụ tích hợp khác thay vì chương trình mặc định (Git sử dụng <code>opendiff</code> cho tôi trong trường hợp này vì tôi đang sử dụng một máy tính Mac), bạn có thể xem danh sách các chương trình tương thích bằng cách chạy lệnh &quot;merge tool candidates&quot;. Gõ tên chương trình bạn muốn sử dung. Trong Chương 7, chúng ta sẽ cùng bàn luận về việc làm thế nào để thay đổi giá trị mặc định này.</p>
+
+                    <p>Sau khi thoát khỏi chương trình hỗ trợ tích hợp, Git sẽ hỏi bạn nếu tích hợp thành công. Nếu bạn trả lời đúng, nó sẽ đánh dấu tập tin đó là đã giải quyết cho bạn.</p>
+
+                    <p>Bạn có thể chạy <code>git status</code> lại một lần nữa để xác thực rằng tất cả các xung đột đã được giải quyết:</p>
+
+                    <pre><code>$ git status
+# On branch master
+# Changes to be committed:
+#   (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+#
+#   modified:   index.html
+#
+</code></pre>
+
+                    <p>Nếu bạn hài lòng với điều này, và chắc chắn rằng tất cả các xung đột đã được tổ chức, bạn có thể chạy lệnh <code>git commit</code> để hoàn thành commit tích hợp. Thông điệp mặc định của commit có dạng như sau:</p>
+
+                    <pre><code>Merge branch &#39;iss53&#39;
+
+Conflicts:
+  index.html
+#
+# It looks like you may be committing a MERGE.
+# If this is not correct, please remove the file
+# .git/MERGE_HEAD
+# and try again.
+#
+</code></pre>
+
+                    <p>Bạn có sửa lại nội dung này với các chi tiết về việc bạn đã giải quyết như thế nào nếu bạn cho rằng các thông tin đó sẽ có ích cho các thành viên khác sau này - tại sao bạn lại làm như vậy, nếu như chúng còn chưa rõ ràng.</p>
+
+                    <div id="nav"><a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Nh%C3%A1nh-L%C3%A0-G%C3%AC%3F">prev</a> | <a href="/book/vi/v1/Ph%C3%A2n-Nh%C3%A1nh-Trong-Git-Qu%E1%BA%A3n-L%C3%BD-C%C3%A1c-Nh%C3%A1nh">next</a></div></div>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <div class="site-source">
+            This <a href="https://github.com/git/git-scm.com/blob/master/README.md#license">open sourced</a> site is <a href="https://github.com/git/git-scm.com">hosted on GitHub.</a><br>
+            Patches, suggestions and comments are welcome.
+        </div>
+        <div class="sfc-member">
+            Git is a member of <a href="/sfc">Software Freedom Conservancy</a>
+        </div>
+    </footer>
+
+    <script src="/assets/jquery-1.7.1.min-01b1ded3b1a4970482bde6a504c08b1b.js"></script>
+    <script src="/assets/jquery-ui-1.8.18.custom.min-b9fd60ca5f0d9f1046a1bb0d6427d724.js"></script>
+    <script src="/assets/jquery.defaultvalue-a81e0ef280e130b8c19c64de0aedac50.js"></script>
+    <script src="/assets/session.min-4311b168a07712f9c67e61e9ccb673e0.js"></script>
+    <script src="/assets/site-8c3003251e35cac8c1663cf44ec2811f.js"></script>
+
+</div>
+
+</body>
+</html>
