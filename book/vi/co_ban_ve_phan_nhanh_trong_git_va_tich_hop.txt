@@ -1,0 +1,12 @@
+Cơ Bản Về Phân Nhánh và Tích Hợp
+Hãy cùng xem qua một ví dụ đơn giản về phân nhánh và tích hợp với một quy trình làm việc mà có thể bạn sẽ sử dụng nó vào thực tế. Bạn sẽ thực hiện theo các bước sau:
+
+Làm việc trên một web site
+Tạo nhánh cho một câu chuyện mới mà bạn đang làm.
+Làm việc trên nhánh đó.
+Đến lúc này, bạn nhận được thông báo rằng có một vấn đề nghiêm trọng cần được khắc phục ngay. Bạn sẽ làm theo các bước sau:
+
+Chuyển lại về nhánh sản xuất (production)
+Tạo mới một nhánh khác để khắc phục lỗi
+Sau khi đã kiểm tra ổn định, tích hợp nhánh đó lại và đưa vào hoạt động.
+Chuyển ngược lại với câu chuyện của bạn và tiếp tục làm việc.
